@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-interface FormData {
+export interface FormData {
     name: string;
     billName: string;
     priceOfFoot: number;
@@ -9,7 +9,7 @@ interface FormData {
     workDone: string[];
 }
 
-interface FormFillProps {
+export interface FormFillProps {
     onSubmit: (data: FormData) => void;
 }
 
@@ -42,7 +42,7 @@ function FormFill({ onSubmit }: FormFillProps) {
 
     return (
         <form className="form-container" onSubmit={handleSubmit(onSubmitHandler)}>
-            <label className="form-label">Name:</label>
+            <label className="form-label">Your Name:</label>
             <input {...register('name')} className="form-input" />
 
             <label className="form-label">Bill Name:</label>

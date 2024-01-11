@@ -4,18 +4,19 @@ import FormFill from './component/FormFill';
 import PdfModal from './component/PdfDocument';
 
 const App = () => {
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState<FormData>();
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
 
-  const handleFormSubmit = (data) => {
+  const handleFormSubmit = (data: FormData) => {
     setFormData(data);
     setIsPdfModalOpen(true);
   };
 
   return (
     <div>
-      <h1>Form</h1>
-      <FormFill onSubmit={handleFormSubmit} />
+      <div style={{ padding: 1, height: '100vh', width: '100vw' }}>
+        <FormFill onSubmit={handleFormSubmit} />
+      </div>
 
       <PdfModal
         isOpen={isPdfModalOpen}
