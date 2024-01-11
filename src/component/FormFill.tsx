@@ -1,60 +1,83 @@
-// FormFill.js
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-const FormFill = ({ onSubmit }) => {
+interface FormData {
+    name: string;
+    billName: string;
+    priceOfFoot: number;
+    numberOfRooms: string;
+    workDone: string[];
+}
+
+interface FormFillProps {
+    onSubmit: (data: FormData) => void;
+}
+
+function FormFill({ onSubmit }: FormFillProps) {
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
-    } = useForm();
+        // formState: { errors },
+    } = useForm<FormData>();
 
-    const handleRoomNumberChange = (value) => {
+    // State for workDone
+    const [workDone, setWorkDone] = useState<string[]>([]);
+
+    const handleRoomNumberChange = (value: string) => {
         const numberOfRooms = parseInt(value, 10) || 0;
-        setValue('workDone', []);
+        setWorkDone(Array.from({ length: numberOfRooms }, (_, index) => workDone[index] || ''));
+    };
 
-        for (let i = 0; i < numberOfRooms; i++) {
-            setValue(`workDone[${i}]`, '');
-        }
+    // Update workDone state on input change
+    const handleWorkDoneChange = (index: number, value: string) => {
+        const updatedWorkDone = [...workDone];
+        updatedWorkDone[index] = value;
+        setWorkDone(updatedWorkDone);
+    };
+
+    const onSubmitHandler: SubmitHandler<FormData> = (data) => {
+        onSubmit({ ...data, workDone });
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <label>
-                Name:
-                <input {...register('name')} />
-            </label>
+        <form className="form-container" onSubmit={handleSubmit(onSubmitHandler)}>
+            <label className="form-label">Name:</label>
+            <input {...register('name')} className="form-input" />
 
-            <label>
-                Bill Name:
-                <input {...register('billName')} />
-            </label>
+            <label className="form-label">Bill Name:</label>
+            <input {...register('billName')} className="form-input" />
 
-            <label>
-                Price of Foot:
-                <input type="number" {...register('priceOfFoot')} />
-            </label>
+            <label className="form-label">Price of Foot:</label>
+            <input type="number" {...register('priceOfFoot')} className="form-input" />
 
-            <label>
-                Number of Rooms:
-                <input
-                    type="number"
-                    {...register('numberOfRooms')}
-                    onChange={(e) => handleRoomNumberChange(e.target.value)}
-                />
-            </label>
+            <label className="form-label">Number of Rooms:</label>
+            <input
+                type="number"
+                {...register('numberOfRooms')}
+                onChange={(e) => {
+                    handleRoomNumberChange(e.target.value);
+                    setValue('numberOfRooms', e.target.value);
+                }}
+                className="form-input"
+            />
 
-            {Array.from({ length: parseInt(errors.numberOfRooms?.value, 10) || 0 }).map((_, index) => (
-                <label key={index}>
-                    Work Done in Foots for Room {index + 1}:
-                    <input {...register(`workDone[${index}]`)} />
-                </label>
+            {Array.from({ length: workDone.length }).map((_, index) => (
+                <div key={index}>
+                    <label className="form-label">Work Done in Foots for Room {index + 1}:</label>
+                    <input
+                        value={workDone[index]}
+                        onChange={(e) => handleWorkDoneChange(index, e.target.value)}
+                        className="form-input"
+                    />
+                </div>
             ))}
 
-            <button type="submit">Submit</button>
+            <button type="submit" className="form-button">
+                Submit
+            </button>
         </form>
     );
-};
+}
 
 export default FormFill;

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // PdfModal.js
-import React from 'react';
 import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
 import Modal from 'react-modal';
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const PdfDocument = ({ formData }) => (
+const PdfDocument = ({ formData }: any) => (
     <Document>
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
@@ -24,7 +24,7 @@ const PdfDocument = ({ formData }) => (
                 <Text>Price of Foot: {formData.priceOfFoot}</Text>
                 <Text>Number of Rooms: {formData.numberOfRooms}</Text>
                 <Text>Work Done in Foots:</Text>
-                {formData.workDone.map((work, index) => (
+                {formData.workDone.map((work: string, index: number) => (
                     <Text key={index}>Room {index + 1}: {work}</Text>
                 ))}
             </View>
@@ -32,7 +32,7 @@ const PdfDocument = ({ formData }) => (
     </Document>
 );
 
-const PdfModal = ({ isOpen, onRequestClose, formData }) => (
+const PdfModal = ({ isOpen, onRequestClose, formData }: any) => (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} contentLabel="PDF Modal">
         <PDFViewer width="100%" height="800px">
             <PdfDocument formData={formData} />
