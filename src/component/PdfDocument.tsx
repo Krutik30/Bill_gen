@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
 import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+// @ts-ignore
 import { Image } from '@react-pdf/primitives';
 import Modal from 'react-modal';
 
