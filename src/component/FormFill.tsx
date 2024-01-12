@@ -10,7 +10,8 @@ export interface FormData {
 }
 
 export interface FormFillProps {
-    onSubmit: (data: FormData) => void;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    onSubmit: Function | ((data: FormData) => void);
 }
 
 function FormFill({ onSubmit }: FormFillProps) {
