@@ -32,9 +32,4 @@ export default defineConfig({
       },
     }),
   ],
-  build: {
-    rollupOptions: {
-      input: 'src/main.tsx', // or 'src/main.js' if you are using JavaScript
-    },
-  },
 });
