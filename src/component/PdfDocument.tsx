@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, pdf, PDFViewer } from '@react-pdf/renderer';
 // @ts-ignore
 import { Image } from '@react-pdf/primitives';
 import Modal from 'react-modal';
+import { useEffect, useState } from 'react';
+import { saveAs } from 'file-saver';
+
+// Set the app element for react-modal
+Modal.setAppElement('#root');
+
 
 const styles = StyleSheet.create({
     page: {
@@ -81,13 +87,69 @@ const PdfDocument = ({ formData }: any) => (
     </Document>
 );
 
-const PdfModal = ({ isOpen, onRequestClose, formData }: any) => (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} contentLabel="PDF Modal">
-        <PDFViewer width="100%" height={800}>
-            <PdfDocument formData={formData} />
-        </PDFViewer>
-        {/* <button onClick={() => alert('Download logic here')}>Download PDF</button> */}
-    </Modal>
-);
+const generatePdfBlob = async (formData: any): Promise<Blob | null> => {
+    try {
+        // Generate the PDF content
+        const pdfContent = await pdf(<PdfDocument formData={formData} />);
+
+        // Retrieve the PDF blob using the toBlob method
+        const blob = await pdfContent.toBlob();
+
+        return blob;
+    } catch (error) {
+        console.error('Error generating PDF blob:', error);
+        return null;
+    }
+};
+
+const PdfModal = ({ isOpen, onRequestClose, formData }: any) => {
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkScreenWidth = () => {
+            setIsMobile(window.innerWidth < 600); // Adjust the threshold as needed
+        };
+
+        checkScreenWidth();
+
+        // Add event listener to update isMobile when the window is resized
+        window.addEventListener('resize', checkScreenWidth);
+
+        // Cleanup function to remove the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', checkScreenWidth);
+        };
+    }, []);
+
+    useEffect(() => {
+        // Cleanup function to remove the app element when the component unmounts
+        return () => {
+            // @ts-expect-error
+            Modal.setAppElement(null);
+        };
+    }, []);
+
+    const handleDownload = async () => {
+        // Generate the PDF blob
+        const blob = await generatePdfBlob(formData);
+
+        // Trigger the download with a specified filename
+        if (blob) {
+            saveAs(blob, 'generated-pdf.pdf');
+        }
+    };
+
+    return (
+        <Modal isOpen={isOpen} onRequestClose={onRequestClose} contentLabel="PDF Modal">
+            {
+                !isMobile 
+                    ? <PDFViewer width="100%" height={800}>
+                        <PdfDocument formData={formData} />
+                    </PDFViewer> 
+                    : <button onClick={handleDownload}>Download PDF</button>
+            }
+        </Modal>
+    );
+};
 
 export default PdfModal;
