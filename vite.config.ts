@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -32,4 +32,9 @@ export default defineConfig({
       },
     }),
   ],
-})
+  build: {
+    rollupOptions: {
+      input: 'src/main.tsx', // or 'src/main.js' if you are using JavaScript
+    },
+  },
+});
