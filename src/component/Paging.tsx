@@ -1,8 +1,14 @@
-import { useState } from "react"
-
-export default function Paging() {
-
-  const [ pageNumber ,setPageNumber ] = useState(1);
+/* eslint-disable @typescript-eslint/ban-types */
+export default function Paging({
+  pages,
+  setPages
+}: {
+  pages: {
+    selected: number,
+    totalPages: number[]
+  },
+  setPages: Function
+}) {
 
   return (
     <div
@@ -20,8 +26,12 @@ export default function Paging() {
           fontSize: '25px'
         }}
         onClick={() => {
-          if(pageNumber > 1)
-            setPageNumber(pageNumber-1)
+          if(pages.selected > 1){
+            setPages({
+              ...pages,
+              selected: pages.selected - 1
+            })
+          }
         }}
       >
         &lt;
@@ -32,15 +42,19 @@ export default function Paging() {
           color: 'blue'
         }}
       >
-        {pageNumber}
+        {pages.selected}
       </div>
       <div
         style={{
           fontSize: '25px'
         }}
         onClick={() => {
-          if(pageNumber < 10)
-            setPageNumber(pageNumber+1)          
+          if(pages.selected < 10){
+            setPages({
+              ...pages,
+              selected: pages.selected + 1
+            })          
+          }
         }}
       >
         &gt;

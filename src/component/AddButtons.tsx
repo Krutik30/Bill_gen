@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-types */
 export default function AddButtons({
-    onAddGroup
+    pages,
+    setPages,
+    onAddGroup,
+    handleAddWorkObject
 }:{
-    onAddGroup: () => void
+    pages: {
+        selected: number,
+        totalPages: number[]
+    },
+    setPages: Function,
+    onAddGroup: () => void,
+    handleAddWorkObject: () => void
 }) {
   return (
       <div
@@ -10,24 +20,28 @@ export default function AddButtons({
               justifyContent: 'space-between',
           }}
       >
-          <button
-              type='button'
-              className='form-add-button'
-              onClick={() => {
+        <button
+            type='button'
+            className='form-add-button'
+            onClick={() => {
                 onAddGroup()
-              }}
-          >
-              + Add a Group
-          </button>
-          <button
-              type='button'
-              className='form-add-button'
-              onClick={() => {
-
-              }}
-          >
-              + Add More
-          </button>
+                setPages({
+                    ...pages,
+                    totalPages: pages.totalPages.push(pages.totalPages.length)
+                })
+            }}
+        >
+            + Add a Group
+        </button>
+        <button
+            type='button'
+            className='form-add-button'
+            onClick={() => {
+                handleAddWorkObject()
+            }}
+        >
+            + Add More
+        </button>
       </div>
   )
 }

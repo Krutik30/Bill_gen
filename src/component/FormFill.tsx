@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { FormInput } from '../formElement/InputField';
 import Paging from './Paging';
 import AddButtons from './AddButtons';
-import { useState } from 'react';
 import InputObject from '../formElement/InputObject';
+import MainDetail from './MainDetail';
+import { useState } from 'react';
+import GroupData from './GroupData';
 
 export interface FormData {
     name: string;
@@ -11,7 +14,10 @@ export interface FormData {
     priceOfFoot: number;
     address: string;
     phoneNumber: number;
-    groups: string[];
+    groups: WorkObjectType[];
+}
+
+export interface WorkObjectType {
     workObject: {
         nameOfGroup: string,
         objectName: string,
@@ -20,7 +26,6 @@ export interface FormData {
         height: number,
     }[];
 }
-
 export interface FormFillProps {
     // eslint-disable-next-line @typescript-eslint/ban-types
     onSubmit: Function | ((data: FormData) => void);
@@ -31,9 +36,7 @@ function FormFill({ onSubmit }: FormFillProps) {
         register,
         handleSubmit,
         control,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } = useForm<any>();
-
+    } = useForm<FormData>();
 
     const onSubmitHandler: SubmitHandler<FormData> = (data) => {
         onSubmit({ ...data });
@@ -44,77 +47,45 @@ function FormFill({ onSubmit }: FormFillProps) {
         name: 'groups',
     });
 
-    const { fields: workObjects, append: appendWorkObject, remove: removeWorkObject } = useFieldArray({
-        control,
-        name: 'workObjects',
-    });
-
     const handleAddGroup = () => {
-        appendGroup({}); // Append an empty object to the 'groups' array
+        appendGroup({
+            workObject: []
+        }); 
     };
 
-    const handleAddWorkObject = (groupIndex: number) => {
-        appendWorkObject({ nameOfGroup: `Group ${groupIndex + 1}`, objectName: '', length: 0, width: 0, height: 0 }, {
-            shouldFocus: true,
-        });
-    };
+    const [ pages, setPages ] = useState<{
+        selected: number,
+        totalPages: number[]
+    }>({
+        selected: 1,
+        totalPages: [1, 2]
+    });
 
 
     return (
         <form className="form-container" onSubmit={handleSubmit(onSubmitHandler)}>
-            <FormInput label="Your Name" name="name" register={register} />
-            <FormInput label="Bill Name" name="billName" register={register} />
-            {/* @ts-expect-error row */}
-            <FormInput label="Address" name="address" register={register} type="textarea" rows="5" />            
-            <FormInput label="Price of Foot" name="priceOfFoot" register={register} type="number" />
-            <FormInput label="Phone Number" name="phoneNumber" register={register} type="number" />
 
-            {groups.map((group, groupIndex) => (
+            {
+                pages.selected === 1 
+                // @ts-expect-error register
+                ? <MainDetail register={register} />
+                : <GroupData groups={groups} />
+            }
+            
+            {/* {groups.map((group, groupIndex) => (
                 <div key={group.id}>
                     <h3>{`Group ${groupIndex + 1}`}</h3>
-                    {/* Render workObjects for each group dynamically */}
                     {workObjects.map((workObject, workObjectIndex) => (
-                        <div key={workObject.id}>
-                            <FormInput
-                                label={`Object Name ${workObjectIndex + 1}`}
-                                name={`workObjects[${workObjectIndex}].objectName`}
-                                register={register}
-                            />
-                            <FormInput
-                                label="Length"
-                                name={`workObjects[${workObjectIndex}].length`}
-                                register={register}
-                                type="number"
-                            />
-                            <FormInput
-                                label="Width"
-                                name={`workObjects[${workObjectIndex}].width`}
-                                register={register}
-                                type="number"
-                            />
-                            <FormInput
-                                label="Height"
-                                name={`workObjects[${workObjectIndex}].height`}
-                                register={register}
-                                type="number"
-                            />
-                            <button type="button" onClick={() => removeWorkObject(workObjectIndex)}>
-                                Remove Object
-                            </button>
+                        <div key={workObject.id + workObjectIndex}>
+                            <InputObject register={register} groupIndex={groupIndex} />
                         </div>
                     ))}
-                    <button type="button" onClick={() => handleAddWorkObject(groupIndex)}>
-                        + Add Object
-                    </button>
-                    <button type="button" onClick={() => removeGroup(groupIndex)}>
-                        Remove Group
-                    </button>
                 </div>
-            ))}
+            ))} */}
 
 
-            <Paging />
-            <AddButtons onAddGroup={handleAddGroup} />
+            <Paging pages={pages} setPages={setPages} />
+            <AddButtons pages={pages} setPages={setPages} onAddGroup={handleAddGroup} />
 
             <button type="submit" className="form-button">
                 Submit

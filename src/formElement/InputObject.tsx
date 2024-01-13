@@ -1,9 +1,13 @@
+import React from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import { FormInput } from './InputField';
 
-const InputObject = ({ register }: {
+interface InputObjectProps {
     register: UseFormRegister<FieldValues>;
-}) => (
+    groupIndex: number;
+}
+
+const InputObject: React.FC<InputObjectProps> = ({ register, groupIndex }) => (
     <div
         style={{
             display: 'flex',
@@ -11,7 +15,7 @@ const InputObject = ({ register }: {
         }}
     >
         <div>
-            <FormInput label="Object Name" name="productName" register={register} />
+            <FormInput label={`Object Name `} name={`workObjects[${groupIndex}].objectName`} register={register} />
         </div>
         <div
             style={{
@@ -21,13 +25,13 @@ const InputObject = ({ register }: {
             }}
         >
             <div>
-                <FormInput label="H" name="dimensions.height" type="number" register={register} />
+                <FormInput label="H" name={`workObjects[${groupIndex}].dimensions.height`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="W" name="dimensions.width" type="number" register={register} />
+                <FormInput label="W" name={`workObjects[${groupIndex}].dimensions.width`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="L" name="dimensions.length" type="number" register={register} />
+                <FormInput label="L" name={`workObjects[${groupIndex}].dimensions.length`} type="number" register={register} />
             </div>
         </div>
         {/* <div
@@ -37,8 +41,8 @@ const InputObject = ({ register }: {
                 justifyContent: 'space-between'
             }}
         >
-            <FormInput label="Total" name="total" type="number" register={register} />
-            <FormInput label="Price" name="price" type="number" register={register} />
+            <FormInput label="Total" name={`workObjects[${groupIndex}].total`} type="number" register={register} />
+            <FormInput label="Price" name={`workObjects[${groupIndex}].price`} type="number" register={register} />
         </div> */}
     </div>
 );
