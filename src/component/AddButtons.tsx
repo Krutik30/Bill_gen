@@ -3,7 +3,6 @@ export default function AddButtons({
     pages,
     setPages,
     onAddGroup,
-    handleAddWorkObject
 }:{
     pages: {
         selected: number,
@@ -11,7 +10,6 @@ export default function AddButtons({
     },
     setPages: Function,
     onAddGroup: () => void,
-    handleAddWorkObject: () => void
 }) {
   return (
       <div
@@ -37,7 +35,7 @@ export default function AddButtons({
             type='button'
             className='form-add-button'
             onClick={() => {
-                handleAddWorkObject()
+
             }}
         >
             + Add More

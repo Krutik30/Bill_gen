@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
-import { FormInput } from '../formElement/InputField';
 import Paging from './Paging';
 import AddButtons from './AddButtons';
-import InputObject from '../formElement/InputObject';
 import MainDetail from './MainDetail';
 import { useState } from 'react';
-import GroupData from './GroupData';
+import GroupDataPage from './GroupData';
 
 export interface FormData {
     name: string;
@@ -69,7 +67,8 @@ function FormFill({ onSubmit }: FormFillProps) {
                 pages.selected === 1 
                 // @ts-expect-error register
                 ? <MainDetail register={register} />
-                : <GroupData groups={groups} />
+                // @ts-expect-error register
+                : <GroupDataPage register={register} groups={groups} currentPage={pages.selected}/>
             }
             
             {/* {groups.map((group, groupIndex) => (

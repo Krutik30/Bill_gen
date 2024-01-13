@@ -4,10 +4,10 @@ import { FormInput } from './InputField';
 
 interface InputObjectProps {
     register: UseFormRegister<FieldValues>;
-    groupIndex: number;
+    workObjectIndex: number
 }
 
-const InputObject: React.FC<InputObjectProps> = ({ register, groupIndex }) => (
+const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex }) => (
     <div
         style={{
             display: 'flex',
@@ -15,7 +15,7 @@ const InputObject: React.FC<InputObjectProps> = ({ register, groupIndex }) => (
         }}
     >
         <div>
-            <FormInput label={`Object Name `} name={`workObjects[${groupIndex}].objectName`} register={register} />
+            <FormInput label={`Object Name`} name={`workObjects[${workObjectIndex}].objectName`} register={register} />
         </div>
         <div
             style={{
@@ -25,13 +25,13 @@ const InputObject: React.FC<InputObjectProps> = ({ register, groupIndex }) => (
             }}
         >
             <div>
-                <FormInput label="H" name={`workObjects[${groupIndex}].dimensions.height`} type="number" register={register} />
+                <FormInput label="H" name={`workObjects[${workObjectIndex}].height`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="W" name={`workObjects[${groupIndex}].dimensions.width`} type="number" register={register} />
+                <FormInput label="W" name={`workObjects[${workObjectIndex}].width`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="L" name={`workObjects[${groupIndex}].dimensions.length`} type="number" register={register} />
+                <FormInput label="L" name={`workObjects[${workObjectIndex}].length`} type="number" register={register} />
             </div>
         </div>
         {/* <div
