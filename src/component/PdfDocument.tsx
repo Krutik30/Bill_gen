@@ -51,41 +51,106 @@ const styles = StyleSheet.create({
         textAlign: 'center',   
         fontSize: 14,
         fontWeight: 'bold',
+    },
+    sectionContent: {
+        width: "100vw",
+        textAlign: 'center',
+        fontSize: 12
+    },
+    workObjectFlex: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap'
     }
 });
 
-const PdfDocument = ({ formData }: any) => (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View>
-                <View style={styles.godName} >
-                    {/* <Image style={styles.godName} src="./images/godName.png" /> */}
-                    <Text>
-                        || Om Nama: Shivay ||
-                    </Text>
-                </View>
-                <View style={styles.header}>
-                    <View>
-                        <Text style={styles.mainHeader}>
-                            Vishwakarma Furnitures
-                        </Text>
-                        <Text style={styles.headerText}>{formData.billName}</Text>
-                        <Text>{formData.name}</Text>
-                    </View>
-                    <Image style={styles.photo} src="./images/vishwakarma.png" />
-                </View>
-                <View style={styles.section}>
-                    <View style={styles.sectionHeader}>
-                        <Text>Bed Room</Text>
-                    </View>
-                    <View>
+const PdfDocument = ({ formData }: any) => {
 
+    formData.groups.map((group:any) => {
+        group.workObjects.map((workObject: any) => {
+            workObject['total'] = (workObject.height || 1) * workObject.width * workObject.length;
+            workObject['price'] = workObject['total'] * formData.priceOfFoot;
+        })
+    })
+
+    console.log(formData)
+    return (
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <View>
+                    <View style={styles.godName} >
+                        {/* <Image style={styles.godName} src="./images/godName.png" /> */}
+                        <Text>
+                            || Om Nama: Shivay ||
+                        </Text>
                     </View>
+                    <View style={styles.header}>
+                        <View>
+                            <Text style={styles.mainHeader}>
+                                Vishwakarma Furnitures
+                            </Text>
+                            <Text style={styles.headerText}>{formData.billName}</Text>
+                            <Text>{formData.name}</Text>
+                        </View>
+                        <Image style={styles.photo} src="./images/vishwakarma.png" />
+                    </View>
+                    {
+                        formData.groups.map((group: any) => {
+                            return (
+                                <View style={styles.section}>
+                                    <View style={styles.sectionHeader}>
+                                        <Text>{group.groupName || 'Group 1'}</Text>
+                                    </View>
+                                    <View style={styles.sectionContent}>
+                                        {
+                                            group.workObjects.map((workObject: any) => {
+                                                return (
+                                                    <View style={styles.workObjectFlex}>
+                                                        <Text style={{
+                                                            width: '40%'
+                                                        }}>
+                                                            {workObject.objectName}
+                                                        </Text>
+                                                        <Text style={{
+                                                            width: '10%'
+                                                        }}>
+                                                            {workObject.height}
+                                                        </Text>
+                                                        <Text style={{
+                                                            width: '10%'
+                                                        }}>
+                                                            {workObject.width}
+                                                        </Text>
+                                                        <Text style={{
+                                                            width: '10%'
+                                                        }}>
+                                                            {workObject.length}
+                                                        </Text>
+                                                        <Text style={{
+                                                            width: '15%'
+                                                        }}>
+                                                            {workObject.total}
+                                                        </Text>
+                                                        <Text style={{
+                                                            width: '15%'
+                                                        }}>
+                                                            {workObject.price}
+                                                        </Text>
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
                 </View>
-            </View>
-        </Page>
-    </Document>
-);
+            </Page>
+        </Document>
+    )
+};
 
 const generatePdfBlob = async (formData: any): Promise<Blob | null> => {
     try {
