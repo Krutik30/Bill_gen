@@ -41,16 +41,6 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, wo
                 <FormInput defaultValue={workObject.length} label="L" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].length`} type="number" step="any" register={register} />
             </div>
         </div>
-        {/* <div
-            style={{
-                width: '45%',
-                display: 'flex',
-                justifyContent: 'space-between'
-            }}
-        >
-            <FormInput label="Total" name={`workObjects[${groupIndex}].total`} type="number" register={register} />
-            <FormInput label="Price" name={`workObjects[${groupIndex}].price`} type="number" register={register} />
-        </div> */}
     </div>
 );
 

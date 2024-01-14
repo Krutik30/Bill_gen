@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
-import Paging from './Paging';
 import AddButtons from './AddButtons';
 import MainDetail from './MainDetail';
 import { useState } from 'react';
@@ -87,7 +86,6 @@ function FormFill({ onSubmit }: FormFillProps) {
             ))} */}
 
 
-            <Paging pages={pages} setPages={setPages} />
             <AddButtons pages={pages} setPages={setPages} onAddGroup={handleAddGroup} />
 
             <button type="submit" className="form-button">

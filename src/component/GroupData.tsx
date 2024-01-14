@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { WorkObjectType } from './FormFill';
 import InputObject from '../formElement/InputObject';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
@@ -22,6 +22,7 @@ const GroupDataPage: React.FC<GroupDataPageProps> = ({ groups, currentPage, regi
     // });
 
     const currentGroup = groups[currentGroupIndex];
+    const [ workObjects, setWorkObjects ] = useState(currentGroup.workObjects)
 
     const handleAddWorkObject = () => {
         const newWorkObject = {
@@ -41,12 +42,13 @@ const GroupDataPage: React.FC<GroupDataPageProps> = ({ groups, currentPage, regi
             setValue(`groups[${index}]`, group);
         });
         forceUpdate()
+        setWorkObjects(updatedGroups[currentGroupIndex].workObjects)
     };
 
     return (
         <div>
             <h3>{`Group ${currentGroupIndex + 1}`}</h3>
-            {currentGroup.workObjects.map((workObject, workObjectIndex) => (
+            {workObjects.map((workObject, workObjectIndex) => (
                 <div key={workObjectIndex}>
                     <InputObject register={register} workObjectIndex={workObjectIndex} workObject={workObject} groupIndex={currentGroupIndex} />
                 </div>
