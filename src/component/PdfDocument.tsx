@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     section: {
         flexGrow: 1,
         marginBottom: 10,
+        paddingVertical: 30
     },
     godName: {
         color: 'red',
@@ -33,13 +34,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
+    profileHeader: {
+        alignItems: 'center',
+        marginVertical: 50,
+    },
     mainHeader: {
-        fontSize: 20, 
-        fontWeight: 1400,
+        fontSize: 40, 
+        fontWeight: 'extrabold',
+    },
+    profileSection: {
+        flexDirection: 'row', 
+        marginVertical: 10
     },
     headerText: {
         fontSize: 14,
         fontWeight: 'bold',
+    },
+    profileText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        width: '50%',
+        textAlign: 'justify'
     },
     photo: {
         width: 120,
@@ -49,13 +64,15 @@ const styles = StyleSheet.create({
     sectionHeader: {
         width: "100vw",
         textAlign: 'center',   
-        fontSize: 14,
+        fontSize: 30,
+        marginBottom: 20,
         fontWeight: 'bold',
     },
     sectionContent: {
         width: "100vw",
         textAlign: 'center',
-        fontSize: 12
+        fontSize: 16,
+        margin: 2
     },
     workObjectFlex: {
         width: '100%',
@@ -65,13 +82,57 @@ const styles = StyleSheet.create({
     }
 });
 
+const pdfStyles = StyleSheet.create({
+    allSideBorder: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#000000'
+    },
+    topBorder: {
+        borderStyle: 'solid',
+        borderTopWidth: 1,
+        borderColor: '#000000'
+    },
+    bottomBorder: {
+        borderStyle: 'solid',
+        borderBottomWidth: 1,
+        borderColor: '#000000'
+    },
+    leftBorder: {
+        borderStyle: 'solid',
+        borderLeftWidth: 1,
+        borderColor: '#000000'
+    },
+    rightBorder: {
+        borderStyle: 'solid',
+        borderRightWidth: 1,
+        borderColor: '#000000'
+    },
+    verticalBorder: {
+        borderStyle: 'solid',
+        borderRightWidth: 1,
+        borderRightColor: '#000000'
+    },
+})
+
 const PdfDocument = ({ formData }: any) => {
 
+    let totalFoot = 0;
+    let totalPrice = 0;
     formData.groups.map((group:any) => {
+        let groupFoot = 0;
+        let groupPrice = 0;
         group.workObjects.map((workObject: any) => {
             workObject['total'] = (workObject.height || 1) * workObject.width * workObject.length;
             workObject['price'] = workObject['total'] * formData.priceOfFoot;
+            groupFoot += workObject['total'];
+            groupPrice += workObject['price'];
         })
+        group['groupFoot'] = groupFoot;
+        group['groupPrice'] = groupPrice;
+
+        totalFoot += groupFoot;
+        totalPrice += groupPrice;
     })
 
     console.log(formData)
@@ -90,64 +151,192 @@ const PdfDocument = ({ formData }: any) => {
                             <Text style={styles.mainHeader}>
                                 Vishwakarma Furnitures
                             </Text>
-                            <Text style={styles.headerText}>{formData.billName}</Text>
-                            <Text>{formData.name}</Text>
                         </View>
                         <Image style={styles.photo} src="./images/vishwakarma.png" />
                     </View>
-                    {
-                        formData.groups.map((group: any) => {
-                            return (
-                                <View style={styles.section}>
-                                    <View style={styles.sectionHeader}>
-                                        <Text>{group.groupName || 'Group 1'}</Text>
-                                    </View>
-                                    <View style={styles.sectionContent}>
-                                        {
-                                            group.workObjects.map((workObject: any) => {
-                                                return (
-                                                    <View style={styles.workObjectFlex}>
-                                                        <Text style={{
-                                                            width: '40%'
-                                                        }}>
-                                                            {workObject.objectName}
-                                                        </Text>
-                                                        <Text style={{
-                                                            width: '10%'
-                                                        }}>
-                                                            {workObject.height}
-                                                        </Text>
-                                                        <Text style={{
-                                                            width: '10%'
-                                                        }}>
-                                                            {workObject.width}
-                                                        </Text>
-                                                        <Text style={{
-                                                            width: '10%'
-                                                        }}>
-                                                            {workObject.length}
-                                                        </Text>
-                                                        <Text style={{
-                                                            width: '15%'
-                                                        }}>
-                                                            {workObject.total}
-                                                        </Text>
-                                                        <Text style={{
-                                                            width: '15%'
-                                                        }}>
-                                                            {workObject.price}
-                                                        </Text>
-                                                    </View>
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                </View>
-                            )
-                        })
-                    }
+                    <View style={styles.profileHeader}>
+                        <View style={styles.profileSection}>
+                            <Text style={styles.profileText}>Name</Text>
+                            <Text style={styles.profileText}> : {formData.name}</Text>
+                        </View>
+                        <View style={styles.profileSection}>
+                            <Text style={styles.profileText}>To</Text>
+                            <Text style={styles.profileText}> : {formData.billName}</Text>
+                        </View>
+                        <View style={styles.profileSection}>
+                            <Text style={styles.profileText}>Address</Text>
+                            <Text style={styles.profileText}>: {formData.address}</Text>
+                        </View>
+                        <View style={styles.profileSection}>
+                            <Text style={styles.profileText}>Phone Number</Text>
+                            <Text style={styles.profileText}> : {formData.phoneNumber}</Text>
+                        </View>
+                        <View style={styles.profileSection}>
+                            <Text style={styles.profileText}>Furniture Price (Rate)</Text>
+                            <Text style={styles.profileText}> : Rs. {formData.priceOfFoot}</Text>
+                        </View>
+                    </View>
                 </View>
             </Page>
+            {
+                formData.groups.map((group: any, index: number) => {
+                    return (
+                        <Page>
+                            <View style={styles.section}>
+                                <View style={styles.sectionHeader}>
+                                    <Text>{group.groupName || `Group ${index + 1}`}</Text>
+                                </View>
+                                <View style={{...styles.sectionContent, ...pdfStyles.allSideBorder}}>
+                                    <View style={{ ...styles.workObjectFlex, ...pdfStyles.bottomBorder }}>
+                                        <Text style={{
+                                            width: '40%',
+                                            ...pdfStyles.rightBorder, 
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Object Name
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Height
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Width
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Length
+                                        </Text>
+                                        <Text style={{
+                                            width: '15%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Foot
+                                        </Text>
+                                        <Text style={{
+                                            width: '15%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            Price
+                                        </Text>
+                                    </View>
+                                    {
+                                        group.workObjects.map((workObject: any) => {
+                                            return (
+                                                <View style={{...styles.workObjectFlex, ...pdfStyles.bottomBorder}}>
+                                                    <Text style={{
+                                                        width: '40%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.objectName}
+                                                    </Text>
+                                                    <Text style={{
+                                                        width: '10%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.height}
+                                                    </Text>
+                                                    <Text style={{
+                                                        width: '10%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.width}
+                                                    </Text>
+                                                    <Text style={{
+                                                        width: '10%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.length}
+                                                    </Text>
+                                                    <Text style={{
+                                                        width: '15%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.total}
+                                                    </Text>
+                                                    <Text style={{
+                                                        width: '15%',
+                                                        ...pdfStyles.rightBorder
+                                                    }}>
+                                                        {workObject.price}
+                                                    </Text>
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                    <View style={{ ...styles.workObjectFlex, ...pdfStyles.bottomBorder }}>
+                                        <Text style={{
+                                            width: '40%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            
+                                        </Text>
+                                        <Text style={{
+                                            width: '10%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            
+                                        </Text>
+                                        <Text style={{
+                                            width: '15%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            {totalFoot}
+                                        </Text>
+                                        <Text style={{
+                                            width: '15%',
+                                            ...pdfStyles.rightBorder,
+                                            paddingBottom: 10,
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            {totalPrice}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Page>
+                    )
+                })
+            }
         </Document>
     )
 };

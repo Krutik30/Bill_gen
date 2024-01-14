@@ -32,13 +32,13 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, wo
             }}
         >
             <div>
-                <FormInput defaultValue={workObject.height} label="H" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].height`} type="number" register={register} />
+                <FormInput defaultValue={workObject.height} label="H" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].height`} type="number" step="any" register={register} />
             </div>
             <div>
-                <FormInput defaultValue={workObject.width} label="W" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].width`} type="number" register={register} />
+                <FormInput defaultValue={workObject.width} label="W" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].width`} type="number" step="any" register={register} />
             </div>
             <div>
-                <FormInput defaultValue={workObject.length} label="L" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].length`} type="number" register={register} />
+                <FormInput defaultValue={workObject.length} label="L" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].length`} type="number" step="any" register={register} />
             </div>
         </div>
         {/* <div
