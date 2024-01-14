@@ -11,9 +11,10 @@ interface InputObjectProps {
         width: number,
         height: number,
     };
+    groupIndex: number;
 }
 
-const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, workObject }) => (
+const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, workObject, groupIndex }) => (
     <div
         style={{
             display: 'flex',
@@ -21,7 +22,7 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, wo
         }}
     >
         <div>
-            <FormInput defaultValue={workObject.objectName} label={`Object Name`} name={`workObjects[${workObjectIndex}].objectName`} register={register} />
+            <FormInput defaultValue={workObject.objectName} label={`Object Name`} name={`groups[${groupIndex}].workObjects[${workObjectIndex}].objectName`} register={register} />
         </div>
         <div
             style={{
@@ -31,13 +32,13 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, wo
             }}
         >
             <div>
-                <FormInput defaultValue={workObject.height} label="H" name={`workObjects[${workObjectIndex}].height`} type="number" register={register} />
+                <FormInput defaultValue={workObject.height} label="H" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].height`} type="number" register={register} />
             </div>
             <div>
-                <FormInput defaultValue={workObject.width} label="W" name={`workObjects[${workObjectIndex}].width`} type="number" register={register} />
+                <FormInput defaultValue={workObject.width} label="W" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].width`} type="number" register={register} />
             </div>
             <div>
-                <FormInput defaultValue={workObject.length} label="L" name={`workObjects[${workObjectIndex}].length`} type="number" register={register} />
+                <FormInput defaultValue={workObject.length} label="L" name={`groups[${groupIndex}].workObjects[${workObjectIndex}].length`} type="number" register={register} />
             </div>
         </div>
         {/* <div

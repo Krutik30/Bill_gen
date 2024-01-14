@@ -34,6 +34,7 @@ function FormFill({ onSubmit }: FormFillProps) {
     const {
         register,
         handleSubmit,
+        setValue,
         control,
     } = useForm<FormData>();
 
@@ -59,7 +60,7 @@ function FormFill({ onSubmit }: FormFillProps) {
         totalPages: number
     }>({
         selected: 1,
-        totalPages: 2
+        totalPages: 1
     });
 
 
@@ -71,7 +72,7 @@ function FormFill({ onSubmit }: FormFillProps) {
                 // @ts-expect-error register
                 ? <MainDetail register={register} />
                 // @ts-expect-error register
-                : <GroupDataPage register={register} groups={groups} currentPage={pages.selected} control={control} />
+                : <GroupDataPage register={register} groups={groups} currentPage={pages.selected} control={control} setValue={setValue} />
             }
             
             {/* {groups.map((group, groupIndex) => (
