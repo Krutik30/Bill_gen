@@ -1,17 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useReducer } from 'react';
 import { WorkObjectType } from './FormFill';
 import InputObject from '../formElement/InputObject';
-import { FieldValues, UseFormRegister, useFieldArray } from 'react-hook-form';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface GroupDataPageProps {
     groups: WorkObjectType[];
     currentPage: number;
     register: UseFormRegister<FieldValues>;
-    control: any;
     setValue: any;
 }
 
-const GroupDataPage: React.FC<GroupDataPageProps> = ({ groups, currentPage, register, control, setValue }) => {
+const GroupDataPage: React.FC<GroupDataPageProps> = ({ groups, currentPage, register, setValue }) => {
     const currentGroupIndex = currentPage - 2;
     const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -25,6 +25,7 @@ const GroupDataPage: React.FC<GroupDataPageProps> = ({ groups, currentPage, regi
 
     const handleAddWorkObject = () => {
         const newWorkObject = {
+            nameOfGroup: '',
             objectName: '',
             length: 0,
             width: 0,

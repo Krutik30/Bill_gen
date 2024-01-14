@@ -42,7 +42,7 @@ function FormFill({ onSubmit }: FormFillProps) {
         onSubmit({ ...data });
     };
 
-    const { fields: groups, append: appendGroup, remove: removeGroup } = useFieldArray({
+    const { fields: groups, append: appendGroup,  } = useFieldArray({
         control,
         name: 'groups',
     });
