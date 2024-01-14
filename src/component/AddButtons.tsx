@@ -6,7 +6,7 @@ export default function AddButtons({
 }:{
     pages: {
         selected: number,
-        totalPages: number[]
+        totalPages: number
     },
     setPages: Function,
     onAddGroup: () => void,
@@ -25,20 +25,11 @@ export default function AddButtons({
                 onAddGroup()
                 setPages({
                     ...pages,
-                    totalPages: pages.totalPages.push(pages.totalPages.length)
+                    totalPages: pages.totalPages + 1
                 })
             }}
         >
             + Add a Group
-        </button>
-        <button
-            type='button'
-            className='form-add-button'
-            onClick={() => {
-
-            }}
-        >
-            + Add More
         </button>
       </div>
   )

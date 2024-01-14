@@ -16,7 +16,8 @@ export interface FormData {
 }
 
 export interface WorkObjectType {
-    workObject: {
+    groupName: string;
+    workObjects: {
         nameOfGroup: string,
         objectName: string,
         length: number,
@@ -47,16 +48,18 @@ function FormFill({ onSubmit }: FormFillProps) {
 
     const handleAddGroup = () => {
         appendGroup({
-            workObject: []
+            groupName: '',
+            workObjects: []
         }); 
+        console.log(groups)
     };
 
     const [ pages, setPages ] = useState<{
         selected: number,
-        totalPages: number[]
+        totalPages: number
     }>({
         selected: 1,
-        totalPages: [1, 2]
+        totalPages: 2
     });
 
 
@@ -68,7 +71,7 @@ function FormFill({ onSubmit }: FormFillProps) {
                 // @ts-expect-error register
                 ? <MainDetail register={register} />
                 // @ts-expect-error register
-                : <GroupDataPage register={register} groups={groups} currentPage={pages.selected}/>
+                : <GroupDataPage register={register} groups={groups} currentPage={pages.selected} control={control} />
             }
             
             {/* {groups.map((group, groupIndex) => (

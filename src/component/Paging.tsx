@@ -5,7 +5,7 @@ export default function Paging({
 }: {
   pages: {
     selected: number,
-    totalPages: number[]
+    totalPages: number
   },
   setPages: Function
 }) {
@@ -23,7 +23,8 @@ export default function Paging({
     >
       <div
         style={{
-          fontSize: '25px'
+          fontSize: '25px',
+          cursor: 'pointer'
         }}
         onClick={() => {
           if(pages.selected > 1){
@@ -46,14 +47,15 @@ export default function Paging({
       </div>
       <div
         style={{
-          fontSize: '25px'
+          fontSize: '25px',
+          cursor: 'pointer'
         }}
         onClick={() => {
-          if(pages.selected < 10){
+          if(pages.selected < pages.totalPages){
             setPages({
               ...pages,
               selected: pages.selected + 1
-            })          
+            })      
           }
         }}
       >

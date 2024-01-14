@@ -1,13 +1,19 @@
 import React from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import { FormInput } from './InputField';
-
 interface InputObjectProps {
     register: UseFormRegister<FieldValues>;
-    workObjectIndex: number
+    workObjectIndex: number;
+    workObject: {
+        nameOfGroup: string,
+        objectName: string,
+        length: number,
+        width: number,
+        height: number,
+    };
 }
 
-const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex }) => (
+const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex, workObject }) => (
     <div
         style={{
             display: 'flex',
@@ -15,7 +21,7 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex }) 
         }}
     >
         <div>
-            <FormInput label={`Object Name`} name={`workObjects[${workObjectIndex}].objectName`} register={register} />
+            <FormInput defaultValue={workObject.objectName} label={`Object Name`} name={`workObjects[${workObjectIndex}].objectName`} register={register} />
         </div>
         <div
             style={{
@@ -25,13 +31,13 @@ const InputObject: React.FC<InputObjectProps> = ({ register, workObjectIndex }) 
             }}
         >
             <div>
-                <FormInput label="H" name={`workObjects[${workObjectIndex}].height`} type="number" register={register} />
+                <FormInput defaultValue={workObject.height} label="H" name={`workObjects[${workObjectIndex}].height`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="W" name={`workObjects[${workObjectIndex}].width`} type="number" register={register} />
+                <FormInput defaultValue={workObject.width} label="W" name={`workObjects[${workObjectIndex}].width`} type="number" register={register} />
             </div>
             <div>
-                <FormInput label="L" name={`workObjects[${workObjectIndex}].length`} type="number" register={register} />
+                <FormInput defaultValue={workObject.length} label="L" name={`workObjects[${workObjectIndex}].length`} type="number" register={register} />
             </div>
         </div>
         {/* <div
