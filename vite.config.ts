@@ -32,11 +32,11 @@ export default defineConfig({
       },
     }),
   ],
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve('index.html'),
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     input: {
+  //       main: resolve('index.html'),
+  //     },
+  //   },
+  // },
 });

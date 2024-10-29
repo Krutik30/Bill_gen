@@ -6,6 +6,8 @@ import { Image } from '@react-pdf/primitives';
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import { saveAs } from 'file-saver';
+import { MY_DATA } from './MY_DATA';
+import MYCV from './MY_CV';
 
 // Set the app element for react-modal
 Modal.setAppElement('#root');
@@ -398,7 +400,7 @@ const PdfModal = ({ isOpen, onRequestClose, formData }: any) => {
             {
                 !isMobile 
                     ? <PDFViewer width="100%" height={800}>
-                        <PdfDocument formData={formData} />
+                        <MYCV formData={MY_DATA} />
                     </PDFViewer> 
                     : <button onClick={handleDownload}>Download PDF</button>
             }
